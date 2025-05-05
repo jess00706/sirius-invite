@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Приглашение от Sirius</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url(collage.jpg);
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+
+    .invite-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .invite-box h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+      color: #ffd700;
+    }
+
+    .invite-box p {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .form-box {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .form-box label {
+      display: block;
+      margin: 10px 0;
+    }
+
+    .form-box input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .form-box button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ffd700;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .form-box button:hover {
+      background-color: #e6c200;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <img src="logo.jpg" alt="Sirius Logo" class="logo">
+    
+    <div class="invite-box">
+      <h1>Приглашение от Sirius Sport PR HR</h1>
+      <p>
+        Дорогие парни!<br>
+        Поздравляем вас с наступающим праздником!<br><br>
+        Приглашаем вас на увлекательное событие,<br>
+        которое состоится <strong>6 мая в 17:00</strong> в <strong>кабинете 907</strong>!<br><br>
+        Не пропустите! Ждем всех с нетерпением!
+      </p>
+
+      <div class="form-box">
+        <form id="inviteForm">
+          <label><input type="radio" name="attend" value="Да, конечно!"> Да, конечно!</label>
+          <label><input type="radio" name="attend" value="Не могу"> Не могу</label>
+          <label><input type="radio" name="attend" value="Может быть"> Может быть</label>
+          <button type="submit">Отправить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('inviteForm');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="attend"]:checked');
+      if (!selected) {
+        alert("Пожалуйста, выбери вариант.");
+        return;
+      }
+
+      const message = 'Sirius приглашение - ответ:\nУчастник выбрал: ${selected.value}';
+
+      const botToken = '7978194163:AAHBSuQ2pe6we959mUUdtMy3o0Mb0E93hlc';
+      const chatId = '7185592779';
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      }).then(response => {
+        if (response.ok) {
+          alert("Ответ отправлен, спасибо!");
+          form.reset();
+        } else {
+          alert("Ошибка при отправке. Попробуй позже.");
+          console.error("Ошибка при отправке:", response.statusText);
+        }
+      }).catch(error => {
+        console.error("Произошла ошибка:", error);
+        alert("Произошла ошибка при подключении.");
+      });
+    });
+  </script>
+</body>
+</html>
